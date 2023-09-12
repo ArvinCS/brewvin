@@ -217,7 +217,7 @@
 
 - ##### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
-
+    ![Technical Diagrams](https://github.com/ArvinCS/brewvin/assets/36118285/8b27da7a-bd78-4212-a7c4-86cdd746b7da)
 
 - ##### Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?
 
