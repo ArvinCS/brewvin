@@ -217,6 +217,21 @@
 
 - ##### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
+
+
 - ##### Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?
 
+    Virtual environment digunakan untuk memisahkan environment antar proyek sehingga dependencies yang sama namun beda versi tidak akan saling bertabrakan. Sehingga, kita tetap bisa membuat aplikasi web Django tanpa virtual environment, namun dengan resiko adanya konflik antar dependencies di device development.
+
 - ##### Jelaskan apakah itu MVC, MVT, MVVM dan perbedaan dari ketiganya.
+
+    - MVC (Model-View-Controller)
+        Sebuah *architectural pattern* yang membagi sebuah aplikasi menjadi tiga komponen utama, yaitu `model, view, controller`. Setiap komponen memiliki peranan masing-masing yang berbeda. Model memegang peran sebagai tempat bagaimana data model diatur. View memegang peran sebagai bagaimana tampilan yang akan diberikan kepada pengguna. Controller memegang peran sebagai mengatur alur masuk dan keluarnya *business logic* dan *requests*, manipulasi data dari model kemudian ditampilan ke view.
+    
+    - MVT (Model-View-Template)
+        Sebuah *architectural pattern* yang membagi sebuah aplikasi menjadi tiga komponen utama, yaitu `model, view, template`. Setiap komponen memiliki peranan masing-masing yang berbeda. Model memegang peran sebagai tempat bagaimana data model diatur. View memegang peran sebagai bagaimana *business logic* yang akan dijalankan dan bagaimana data yang diberikan akan ditampilkan kepada pengguna. Template memegang peran sebagai tampilan yang akan muncul kepada pengguna.
+
+    - MVVM (Model-View-ViewModel)
+        Sebuah *architectural pattern* yang membagi sebuah aplikasi menjadi tiga komponen utama, yaitu `model, view, viewmodel`. Setiap komponen memiliki peranan masing-masing yang berbeda. Model memegang peran sebagai tempat bagaimana data model diatur. View memegang peran sebagai bagaimana data yang diberikan akan ditampilkan kepada pengguna dengan meminimalisir *business logic* yang ada. ViewModel memegang peran sebagai perantara antara View dan Model, misalnya memproses *business logic* atau manipulasi data.
+    
+    Perbedaan ketiga *architectural pattern* tersebut tidak terlalu signifikan, karena setiap *architectural pattern* mempunyai kelebihan dan kelemahannya masing-masing. Jadi, *architectural pattern* yang sebaiknya digunakan bergantung pada kasus aplikasi apa yang akan dibuat. Contohnya, aplikasi mobile *Flutter* lebih baik menggunakan MVVM karena behaviour dari Flutter yang lebih cocok.  
