@@ -255,10 +255,98 @@
 
 - ##### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
     - Membuat kerangka base.html yang berisi:
+    ```
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+            />
+            {% block meta %}
+            {% endblock meta %}
+        </head>
+
+        <body>
+            {% block content %}
+            {% endblock content %}
+        </body>
+    </html>
+    ```
     - Membuat input form untuk model Item:
+    ```
+    from django.forms import ModelForm
+    from main.models import Item
+
+    class ItemForm(ModelForm):
+        class Meta:
+            model = Item
+            fields = ["name", "amount", "description", "taste"]
+    ```
     - Membuat fungsi baru `create_item`, `show_xml`, `show_json`, `show_xml_by_id`, `show_json_by_id` pada `views.py`:
-    - Membuat `create_item.html`
+    ```
+    def create_item(request):
+        form = ItemForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            form.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+
+        context = {'form': form}
+        return render(request, "create_item.html", context)
+
+    def show_xml(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+    def show_json(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+    def show_xml_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+    def show_json_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+    - Membuat `create_item.html`:
+    ```
+    {% extends 'base.html' %} 
+
+    {% block content %}
+    <h1>Add New Item</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Add Item"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
     - Menambahkan routing untuk `create_item`, `show_xml`, `show_json`, `show_xml_by_id`, `show_json_by_id` pada `urls.py`:
+    ```
+    app_name = "main"
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('create_item/', create_item, name='create_item'),
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<int:id>/', show_json_by_id, name='show_json_by_id'), 
+    ]
+    ```
 
 - ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
 - 1) HTML
