@@ -254,7 +254,11 @@
     JSON lebih sering digunakan dalam pertukaran data karena strukturnya yang lebih intuitif, sederhana dan ringan. Sehingga, dengan kemudahannya tersebut, data JSON juga lebih mudah untuk diparsing dibandingkan format data lainnya dan ukurannya yang lebih kecil. 
 
 - ##### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-
+    - Membuat kerangka base.html yang berisi:
+    - Membuat input form untuk model Item:
+    - Membuat fungsi baru `create_item`, `show_xml`, `show_json`, `show_xml_by_id`, `show_json_by_id` pada `views.py`:
+    - Membuat `create_item.html`
+    - Menambahkan routing untuk `create_item`, `show_xml`, `show_json`, `show_xml_by_id`, `show_json_by_id` pada `urls.py`:
 
 - ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
 - 1) HTML
