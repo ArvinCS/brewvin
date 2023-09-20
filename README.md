@@ -251,7 +251,11 @@
     HTML (Hypertext Markup Language) lebih digunakan untuk menampilkan sebuah halaman pada website berisi data-data yang ada. Sehingga, jarang digunakan untuk pengiriman data.
 
 - ##### 3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
+    JSON lebih sering digunakan dalam pertukaran data karena strukturnya yang lebih intuitif, sederhana dan ringan. Sehingga, dengan kemudahannya tersebut, data JSON juga lebih mudah untuk diparsing dibandingkan format data lainnya dan ukurannya yang lebih kecil. 
+
 - ##### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+    
+
 - ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
 - 1) HTML
   ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)
