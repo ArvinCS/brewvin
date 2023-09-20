@@ -1,5 +1,6 @@
-### Brew'vin
+## Brew'vin
 
+### Tugas 2
 - ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
     1. Saya membuat direktori baru bernama brewvin sebagai direktori utama, kemudian membuat virtual environment di dalamnya.
@@ -235,3 +236,17 @@
         Sebuah *architectural pattern* yang membagi sebuah aplikasi menjadi tiga komponen utama, yaitu `model, view, viewmodel`. Setiap komponen memiliki peranan masing-masing yang berbeda. Model memegang peran sebagai tempat bagaimana data model diatur. View memegang peran sebagai bagaimana data yang diberikan akan ditampilkan kepada pengguna dengan meminimalisir *business logic* yang ada. ViewModel memegang peran sebagai perantara antara View dan Model, misalnya memproses *business logic* atau manipulasi data.
     
     Perbedaan ketiga *architectural pattern* tersebut tidak terlalu signifikan, karena setiap *architectural pattern* mempunyai kelebihan dan kelemahannya masing-masing. Jadi, *architectural pattern* yang sebaiknya digunakan bergantung pada kasus aplikasi apa yang akan dibuat. Contohnya, aplikasi mobile *Flutter* lebih baik menggunakan MVVM karena behaviour dari Flutter yang lebih cocok.  
+
+### Tugas 3
+
+- ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
+- 1) HTML
+  ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)
+- 2) XML
+  ![postman-xml](https://github.com/ArvinCS/brewvin/assets/36118285/1b9a024f-bb03-42f4-815d-9b7285c1bc94)
+- 3) JSON
+  ![postman-json-id](https://github.com/ArvinCS/brewvin/assets/36118285/1bb7a97f-ba2b-4673-bb12-07148dc62cda)
+- 4) XML by ID
+  ![postman-json](https://github.com/ArvinCS/brewvin/assets/36118285/4b4348ed-5ae3-45d7-ada8-a6e129b4ff47)
+- 5) JSON by ID
+  ![postman-html](https://github.com/ArvinCS/brewvin/assets/36118285/69bb7a1c-b9cd-48e4-8e61-1fd68d6e23ef)
