@@ -254,16 +254,16 @@
     JSON lebih sering digunakan dalam pertukaran data karena strukturnya yang lebih intuitif, sederhana dan ringan. Sehingga, dengan kemudahannya tersebut, data JSON juga lebih mudah untuk diparsing dibandingkan format data lainnya dan ukurannya yang lebih kecil. 
 
 - ##### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-    
+
 
 - ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
 - 1) HTML
-  ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)
+    ![postman-html](https://github.com/ArvinCS/brewvin/assets/36118285/69bb7a1c-b9cd-48e4-8e61-1fd68d6e23ef)
 - 2) XML
-  ![postman-xml](https://github.com/ArvinCS/brewvin/assets/36118285/1b9a024f-bb03-42f4-815d-9b7285c1bc94)
+    ![postman-xml](https://github.com/ArvinCS/brewvin/assets/36118285/1b9a024f-bb03-42f4-815d-9b7285c1bc94)
 - 3) JSON
-  ![postman-json-id](https://github.com/ArvinCS/brewvin/assets/36118285/1bb7a97f-ba2b-4673-bb12-07148dc62cda)
+    ![postman-json](https://github.com/ArvinCS/brewvin/assets/36118285/4b4348ed-5ae3-45d7-ada8-a6e129b4ff47)
 - 4) XML by ID
-  ![postman-json](https://github.com/ArvinCS/brewvin/assets/36118285/4b4348ed-5ae3-45d7-ada8-a6e129b4ff47)
+    ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)
 - 5) JSON by ID
-  ![postman-html](https://github.com/ArvinCS/brewvin/assets/36118285/69bb7a1c-b9cd-48e4-8e61-1fd68d6e23ef)
+    ![postman-json-id](https://github.com/ArvinCS/brewvin/assets/36118285/1bb7a97f-ba2b-4673-bb12-07148dc62cda)
