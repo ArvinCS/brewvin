@@ -239,6 +239,12 @@
 
 ### Tugas 3
 
+- ##### 1. Apa perbedaan antara form POST dan form GET dalam Django?
+    Form POST pada umumnya (berdasarkan convention HTTP) digunakan untuk melakukan update atau menambahkan data ke suatu database. Jika berhasil, maka data tersebut akan masuk ke database. Sebaliknya, response akan menampilkan status codenya yang menandakan bermasalah.
+    Form GET pada umumnya (berdasarkan convention HTTP) digunakan untuk mengambil data dari suatu database yang dijadikan dalam bentuk response dengan status code 200.
+- ##### 2. Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
+- ##### 3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
+- ##### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 - ##### 5. Screenshot Postman (pastikan anda memiliki akses internet untuk melihat screenshot)
 - 1) HTML
   ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)

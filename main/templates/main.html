@@ -1,6 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>{{ app_name}} </h1>
 
 <h5>Name: </h5>
 <p>{{ name }}</p>
 <h5>Class: </h5>
 <p>{{ class }}</p>
+
+<a href="{% url 'main:create_item' %}">
+    <button>
+        Add New Item
+    </button>
+</a>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Taste</th>
+    </tr>
+
+    {% for item in menus %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.taste}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}
