@@ -366,12 +366,196 @@
 
 ### Tugas 4
 
-- ##### 1. Apa itu Django UserCreationForm, dan jelaskan apa kelebihan dan kekurangannya?
+- ##### 1. Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?
+
+    UserCreationForm adalah form yang disediakan langsung oleh Django untuk membuat sebuah akun autentikasi. Kelebihannya adalah form yang praktis dan mudah untuk di-implementasikan pada kodingan yang ada. Namun, kekurangannya adalah terbatasnya modifikasi yang dapat dilakukan pada form tersebut.
 
 - ##### 2. Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
 
+    Autentikasi adalah sistem untuk masuk sebagai suatu akun pengguna dengan syarat memiliki kredensial yang tepat. Sedangkan, otorisasi adalah sistem untuk memastikan bahwa hak akses sesuatu misalnya database diakses oleh pihak atau pengguna yang memiliki haknya (role atau permission).
+
 - ##### 3. Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
+
+    Cookies adalah sebuah penyimpanan lokal yang berukuran kecil yaitu ~4KB. Django menggunakan session untuk menyimpan data pengguna yang telah diautentikasi. Django akan menyimpan session tersebut ketika berhasil login. Kemudian, menghapusnya ketika logout atau cookies tersebut sudah kadaluarsa.
 
 - ##### 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
 
+    Penggunaan cookies mempunyai risiko potensial pada keamanan. Contohnya yaitu CSRF (Cross Site Request Forgery) attack, memanfaatkan cookies pada pengguna dan menggunakannya pada website lain dengan cookies pengguna tersebut. Sehingga, penyerang dapat melakukan suatu tindakan pada suatu website atas nama pengguna tersebut.
+
 - ##### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step.
+    
+    - Membuat fungsi baru yaitu `register_user`, `login_user`, `logout_user` pada `views.py`
+    ```
+    def register_user(request):
+        form = UserCreationForm()
+
+        if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your account has been successfully created!')
+                return redirect('main:login')
+        context = {'form':form}
+        return render(request, 'register.html', context)
+
+    def login_user(request):
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                response = HttpResponseRedirect(reverse("main:show_main")) 
+                response.set_cookie('last_login', str(datetime.datetime.now()))
+                return response
+            else:
+                messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+        context = {}
+        return render(request, 'login.html', context)
+
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+    - Masukkan routing url fungsi tersebut ke `urls.py`
+    ```
+    ...
+    path('register/', register_user, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    ...
+    ```
+    - Membuat templates halaman register dan login untuk autentikasi user
+    ```
+    # register.html
+    {% extends 'base.html' %}
+
+    {% block meta %}
+        <title>Register</title>
+    {% endblock meta %}
+
+    {% block content %}  
+
+    <div class = "login">
+        <h1>Register</h1>  
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                    <tr>  
+                        <td></td>
+                        <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+                </table>  
+            </form>
+
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+    </div>  
+
+    {% endblock content %}
+    ```
+    ```
+    # login.html
+    {% extends 'base.html' %}
+
+    {% block meta %}
+        <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+
+    <div class = "login">
+
+        <h1>Login</h1>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input class="btn login_btn" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+    </div>
+
+    {% endblock content %}
+    ```
+    - Pasang restriksi wajib authenticated pada halaman utama.
+    ```
+    @login_required(login_url='/login')
+    def show_main(request):
+        ...
+    ```
+    - Menghubungkan model `Item` dengan `User`, kemudian jalankan `makemigrations` dan `migrate`.
+    ```
+    from django.contrib.auth.models import User
+    from django.db import models
+
+    # Coffee bean model
+    class Item(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        name = models.CharField(max_length=255)
+        amount = models.IntegerField()
+        description = models.TextField()
+        taste = models.TextField()
+    ```
+    - Modifikasi halaman utama untuk menampilkan username dan last login pengguna serta memberi tombol logout.
+    ```
+    # main.html
+    ...
+    <a href="{% url 'main:logout' %}">
+        <button>
+            Logout
+        </button>
+    </a>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    ```
+    ```
+    # views.py
+    @login_required(login_url='/login')
+    def show_main(request):
+        items = Item.objects.filter(user=request.user)
+        
+        context = {
+            'app_name': 'Brew\'vin',
+            'name': request.user.username,
+            'class': 'PBP D',
+            'menus': items,
+            'last_login': request.COOKIES['last_login'],
+        }
+
+        return render(request, "main.html", context)
+    ```
+    - Membuat dua akun pengguna dengan masing-masing tiga dummy data pada model `Item`.
