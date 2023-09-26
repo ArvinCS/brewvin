@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ app_name}} </h1>
+<h1>{{ app_name }} </h1>
 
 <h5>Name: </h5>
 <p>{{ name }}</p>
@@ -13,14 +13,17 @@
     <button>
         Add New Item
     </button>
-</a>
+</a>    
 
 <table>
     <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Taste</th>
+        <th style="width:75px">Name</th>
+        <th style="width:40px">Amount</th>
+        <th style="width:200px">Description</th>
+        <th style="width:120px">Taste</th>
+        <th style="width:120px">
+            Actions
+        </th>
     </tr>
 
     {% for item in menus %}
@@ -29,8 +32,28 @@
             <td>{{item.amount}}</td>
             <td>{{item.description}}</td>
             <td>{{item.taste}}</td>
+            <td>
+                <form method="post" action="{% url 'main:remove_stock' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">-1</button>
+                </form>
+                <form method="post" action="{% url 'main:add_stock' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">+1</button>
+                </form>
+                <form method="post" action="{% url 'main:delete_item' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
 </table>
 
+<a href="{% url 'main:logout' %}">
+    <button>
+        Logout
+    </button>
+</a>
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from main.views import create_item, show_json, show_json_by_id, show_main, show_xml, show_xml_by_id
+from main.views import add_stock, create_item, delete_item, login_user, logout_user, register_user, remove_stock, show_json, show_json_by_id, show_main, show_xml, show_xml_by_id
 
 app_name = "main"
 urlpatterns = [
@@ -26,4 +26,10 @@ urlpatterns = [
     path('json/', show_json, name='show_json'),
     path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<int:id>/', show_json_by_id, name='show_json_by_id'), 
+    path('register/', register_user, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    path('remove_stock/<int:id>/', remove_stock, name='remove_stock'),
+    path('add_stock/<int:id>/', add_stock, name='add_stock'),
+    path('delete_item/<int:id>/', delete_item, name='delete_item')
 ]
