@@ -13,7 +13,7 @@ from main.models import Item
 
 @login_required(login_url='/login')
 def show_main(request):
-    items = Item.objects.all()
+    items = Item.objects.filter(user=request.user)
     
     context = {
         'app_name': 'Brew\'vin',
