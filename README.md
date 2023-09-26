@@ -1,8 +1,8 @@
 ## Brew'vin
 
 ## List of Content
-- [Tugas 2]("#tugas-2")
-- [Tugas 3]("#tugas-3")
+- [Tugas 2](#tugas-2)
+- [Tugas 3](#tugas-3)
 
 ### Tugas 2
 - ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
@@ -363,3 +363,15 @@
     ![postman-xml-id](https://github.com/ArvinCS/brewvin/assets/36118285/de5ac1f7-aaba-404b-aace-3b9accf06d1f)
 - 5) JSON by ID
     ![postman-json-id](https://github.com/ArvinCS/brewvin/assets/36118285/1bb7a97f-ba2b-4673-bb12-07148dc62cda)
+
+### Tugas 4
+
+- ##### 1. Apa itu Django UserCreationForm, dan jelaskan apa kelebihan dan kekurangannya?
+
+- ##### 2. Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
+
+- ##### 3. Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
+
+- ##### 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
+
+- ##### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step.
