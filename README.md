@@ -4,6 +4,7 @@
 - [Tugas 2](#tugas-2)
 - [Tugas 3](#tugas-3)
 - [Tugas 4](#tugas-4)
+- [Tugas 5](#tugas-5)
 
 ### Tugas 2
 - ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
@@ -560,3 +561,37 @@
         return render(request, "main.html", context)
     ```
     - Membuat dua akun pengguna dengan masing-masing tiga dummy data pada model `Item`.
+
+### Tugas 5
+- ##### Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya. 
+
+    1. Element Selector berguna untuk dan ketika ingin memberikan styling terhadap semua elemen yang tagnya sama
+    2. ID Selector berguna untuk dan ketika ingin memberikan styling terhadap semua elemen yang IDnya sama
+    3. Class Selector berguna untuk dan ketika ingin memberikan styling terhadap semua elemen yang nama classnya sama
+
+- ##### Jelaskan HTML5 Tag yang kamu ketahui.
+
+    - `div`, untuk membuat sebuah kontainer yang berisi elemen-elemen lainnya.
+    - `h1`, `h2`, `...`, `h6`, untuk membuat heading text yang mempunyai ukuran masing-masing.
+    - `button`, untuk membuat sebuah tombol.
+    - `a`, untuk membuat rujukan ke url lain.
+    - `input`, untuk membuat sebuah tempat masukan data.
+
+- ##### Jelaskan perbedaan antara margin dan padding.
+
+    Margin memberikan jarak antara border dengan elemen yang ada di luar sekitarnya. Sedangkan, padding memberikan jarak antara border dengan konten yang ada di dalamnya.
+
+- ##### Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+    Bootstrap merupakan CSS Framework yang telah banyak menyediakan komponen-komponen yang sudah jadi sehingga mirip seperti design system. Sedangkan, Tailwind
+
+- ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+    - Menentukan warna primer yaitu kuning, warna sekunder yaitu putih, dan warna tersier yaitu hitam / merah / hijau.
+
+    - Memasang Tailwind ke base.html yang mengambil `cdn.tailwindcss.com`
+    ```
+    <script src="https://cdn.tailwindcss.com"></script>
+    ```
+    
+    - Melakukan styling pada semua halaman sambil membaca [docs](https://tailwindcss.com/docs/) dari Tailwind.
