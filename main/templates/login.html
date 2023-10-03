@@ -5,40 +5,46 @@
 {% endblock meta %}
 
 {% block content %}
-
-<div class = "login">
-
-    <h1>Login</h1>
-
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
-
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
+<div class="login bg-yellow-300">
+    <div class="flex h-screen flex-col items-center justify-center">
+        <h1 class="text-xl font-semibold p-[12px]">Login</h1>
         
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+        <div class="w-[320px] bg-white p-[30px] rounded-lg">
+            {% if messages %}
+            <ul class="flex flex-col gap-1 mb-[20px]">
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <li class="text-lime-600">{{ message }}</li>
+                    {% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <li class="text-rose-600">{{ message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %} 
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="flex flex-col gap-5">
+                    <div class="flex flex-col gap-3">
+                        <label for="username">Username</label>
+                        <input class="px-[8px] py-[4px] border border-yellow-500" type="text" name="username" placeholder="Username" class="form-control">
+                    </div>
+                            
+                    <div class="flex flex-col gap-3">
+                        <label for="password">Password</label>
+                        <input class="px-[8px] py-[4px] border border-yellow-500" type="password" name="password" placeholder="Password" class="form-control">
+                    </div>
+        
+                    <div class="flex justify-center">
+                        <input class="btn login_btn bg-yellow-500 hover:bg-yellow-600 text-white font-bold border border-yellow-500 rounded px-[20px] py-[5px]" type="submit" value="Login">
+                    </div>
+                </div>
+            </form>
+            <div class="mt-[10px] p-[10px]">
+                Don't have an account yet? <a class="font-semibold text-orange-600" href="{% url 'main:register' %}">Register Now</a>
+            </div>
+        </div>
+    </div>
 
 </div>
 

@@ -1,59 +1,83 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ app_name }} </h1>
-
-<h5>Name: </h5>
-<p>{{ name }}</p>
-<h5>Class: </h5>
-<p>{{ class }}</p>
-
-<h1>There are {{menus|length}} menus here</h1>
-<a href="{% url 'main:create_item' %}">
-    <button>
-        Add New Item
-    </button>
-</a>    
-
-<table>
-    <tr>
-        <th style="width:75px">Name</th>
-        <th style="width:40px">Amount</th>
-        <th style="width:200px">Description</th>
-        <th style="width:120px">Taste</th>
-        <th style="width:120px">
-            Actions
-        </th>
-    </tr>
-
-    {% for item in menus %}
-        <tr>
-            <td>{{item.name}}</td>
-            <td>{{item.amount}}</td>
-            <td>{{item.description}}</td>
-            <td>{{item.taste}}</td>
-            <td>
-                <form method="post" action="{% url 'main:remove_stock' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">-1</button>
-                </form>
-                <form method="post" action="{% url 'main:add_stock' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">+1</button>
-                </form>
-                <form method="post" action="{% url 'main:delete_item' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-</table>
-
-<a href="{% url 'main:logout' %}">
-    <button>
-        Logout
-    </button>
-</a>
-<h5>Sesi terakhir login: {{ last_login }}</h5>
+<div class="flex flex-col items-center justify-center bg-yellow-300 h-screen">
+    <h1 class="text-xl font-semibold m-[30px]">{{ app_name }} </h1>
+    
+    <div class="flex flex-col w-[700px] p-[30px] bg-white rounded-lg divide-y divide-dashed">
+        <div class="flex flex-col gap-3">
+            <div class="flex flex-row gap-3 mb-[10px]">
+                <div class="flex flex-row gap-1">
+                    <h5 class="font-semibold">Name: </h5>
+                    <p>{{ name }}</p>
+                </div>
+                <div class="flex flex-row gap-1">
+                    <h5 class="font-semibold">Class: </h5>
+                    <p>{{ class }}</p>
+                </div>
+            </div>
+    
+            <a class="flex flex-row place-content-between" href="{% url 'main:create_item' %}">
+                <h1 class="font-semibold">There are {{menus|length}} menus here</h1>
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-[5px] px-4 border border-yellow-500 rounded">
+                    Add New Item
+                </button>
+            </a>    
+            
+            <table class="mb-[20px]">
+                <tr>
+                    <th style="width:75px">Name</th>
+                    <th style="width:40px">Amount</th>
+                    <th style="width:200px">Description</th>
+                    <th style="width:120px">Taste</th>
+                    <th style="width:120px">
+                        Actions
+                    </th>
+                </tr>
+                {% for item in menus %}
+                    <tr class="{% if forloop.last %} bg-yellow-100 {% endif %}">
+                        <td>{{item.name}}</td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.taste}}</td>
+                        <td>
+                            <div class="flex flex-col items-center justify-center">
+                                <form class="border w-fit" method="post" action="{% url 'main:remove_stock' item.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">-1</button>
+                                </form>
+                                <form class="border w-fit" method="post" action="{% url 'main:add_stock' item.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">+1</button>
+                                </form>
+                                <form class="border w-fit" method="post" action="{% url 'main:delete_item' item.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if menus|length == 0 %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+        <div class="flex flex-col">
+            <a class="mt-[20px]" href="{% url 'main:logout' %}">
+                <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-[5px] px-4 border border-red-500 rounded">
+                    Logout
+                </button>
+            </a>
+            <h5>Sesi terakhir login: {{ last_login }}</h5>
+        </div>
+    </div>
+    
+</div>
 {% endblock content %}
