@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from main.forms import ItemForm
 from main.models import Item
@@ -38,11 +39,11 @@ def create_item(request):
     return render(request, "create_item.html", context)
 
 def show_xml(request):
-    data = Item.objects.all()
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = Item.objects.all()
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
@@ -124,3 +125,57 @@ def delete_item(request, id):
         else:
             return HttpResponse("ID does not exist")
     return HttpResponse('Request method is not valid')
+
+@csrf_exempt
+def create_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        taste = request.POST.get("taste")
+        user = request.user
+
+        new_product = Item(name=name, amount=amount, description=description, taste=taste, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def remove_item_ajax(request, id):
+    if request.method == 'POST':
+        data = Item.objects.get(pk=id)
+
+        if data:
+            data.delete()
+            return HttpResponse("ID does not exist", status=201)
+        else:
+            return HttpResponse("ID does not exist")
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def increase_item_ajax(request, id):
+    if request.method == 'POST':
+        data = Item.objects.get(pk=id)
+
+        if data:
+            data.amount += 1
+            data.save()
+            return HttpResponse("ID does not exist", status=201)
+        else:
+            return HttpResponse("ID does not exist")
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def decrease_item_ajax(request, id):
+    if request.method == 'POST':
+        data = Item.objects.get(pk=id)
+
+        if data:
+            data.amount -= 1
+            data.save()
+            return HttpResponse("ID does not exist", status=201)
+        else:
+            return HttpResponse("ID does not exist")
+    return HttpResponseNotFound()

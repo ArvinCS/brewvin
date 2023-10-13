@@ -5,6 +5,7 @@
 - [Tugas 3](#tugas-3)
 - [Tugas 4](#tugas-4)
 - [Tugas 5](#tugas-5)
+- [Tugas 6](#tugas-6)
 
 ### Tugas 2
 - ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
@@ -595,3 +596,163 @@
     ```
     
     - Melakukan styling pada semua halaman sambil membaca [docs](https://tailwindcss.com/docs/) dari Tailwind.
+
+### Tugas 6
+- ##### Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+    Asynchronous programming mempunyai kelebihan yaitu melakukan beberapa eksekusi secara bersamaan (asinkronus). Sehingga, **tidak perlu** menunggu sebuah eksekusi selesai terlebih dahulu baru melanjutkan yang lain. Sedangkan, synchronous programming harus menunggu eksekusi sebelumnya selesai dahulu untuk melanjutkan eksekusi berikutnya.
+
+- ##### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+    Event-driven programming adalah sebuah paradigma pemrograman yang menggunakan event sebagai penanda terjadinya suatu peristiwa kemudian event handler akan mengeksekusi perintah yang disiapkan untuk masing-masing jenis event. Contohnya, button pada tugas ini mengandalkan event `onclick` dengan event handler yang telah disiapkan di blok `script`.
+
+- ##### Jelaskan penerapan asynchronous programming pada AJAX.
+    Penggunaan asynchronous programming pada AJAX memiliki tujuan agar sebuah website tidak akan terganggu proses berjalannya hanya karena ada eksekusi AJAX yang sedang berjalan. Misalnya, kita sedang fetch semua `Item` dari database, menggunakan asynchronous maka websitenya tidak akan berhenti, lambat, atau tidak perlu refresh.
+
+- ##### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+    jQuery merupakan salah satu JavaScript library yang sudah ada sejak lama yang memiliki kemampuan untuk manipulasi DOM, event handling, ajax. Sedangkan, Fetch API merupakan salah satu JavaScript library di era modern ini yang mempunyai kemampuan tidak beda jauh dengan jQuery. Kelebihan dari Fetch API yaitu interface yang lebih modern dan fleksibel. Namun, jQuery lebih mendukung untuk browser versi lama dibandingkan Fetch API.
+
+- ##### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+    - Menambahkan `create_item_ajax`, `remove_item_ajax`, `increase_item_ajax` dan `decrease_item_ajax` pada `views.py`.
+    - Menambahkan modal sebagai tempat untuk isi data `create_item_ajax`.
+    - Mengubah table berwarna menjadi cards berwarna dalam menampilkan data dengan `show_json`.
+    - Modifikasi `main.html` sehingga mendukung AJAX untuk membuat, menghapus, menambah stok, mengurangi stok, dan mengambil item.
+    ```
+    # views.py
+    @csrf_exempt
+    def create_item_ajax(request):
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            amount = request.POST.get("amount")
+            description = request.POST.get("description")
+            taste = request.POST.get("taste")
+            user = request.user
+
+            new_product = Item(name=name, amount=amount, description=description, taste=taste, user=user)
+            new_product.save()
+
+            return HttpResponse(b"CREATED", status=201)
+
+        return HttpResponseNotFound()
+
+    @csrf_exempt
+    def remove_item_ajax(request, id):
+        if request.method == 'POST':
+            data = Item.objects.get(pk=id)
+
+            if data:
+                data.delete()
+                return HttpResponse("ID does not exist", status=201)
+            else:
+                return HttpResponse("ID does not exist")
+        return HttpResponseNotFound()
+
+    @csrf_exempt
+    def increase_item_ajax(request, id):
+        if request.method == 'POST':
+            data = Item.objects.get(pk=id)
+
+            if data:
+                data.amount += 1
+                data.save()
+                return HttpResponse("ID does not exist", status=201)
+            else:
+                return HttpResponse("ID does not exist")
+        return HttpResponseNotFound()
+
+    @csrf_exempt
+    def decrease_item_ajax(request, id):
+        if request.method == 'POST':
+            data = Item.objects.get(pk=id)
+
+            if data:
+                data.amount -= 1
+                data.save()
+                return HttpResponse("ID does not exist", status=201)
+            else:
+                return HttpResponse("ID does not exist")
+        return HttpResponseNotFound()
+    ```
+    ```
+    # main.html
+    <script>
+        async function getItems() {
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+
+        async function removeItem(id) {
+            fetch(`{% url 'main:remove_item_ajax' 177013 %}`.replaceAll('177013', id), {
+                method: "POST",
+            }).then(refreshProducts());
+        }
+
+        async function increaseItem(id) {
+            fetch(`{% url 'main:increase_item_ajax' 177013 %}`.replaceAll('177013', id), {
+                method: "POST",
+            }).then(refreshProducts());
+        }
+
+        async function decreaseItem(id) {
+            fetch(`{% url 'main:decrease_item_ajax' 177013 %}`.replaceAll('177013', id), {
+                method: "POST",
+            }).then(refreshProducts());
+        }
+
+        async function refreshProducts() {
+            document.getElementById("item_cards").innerHTML = "";
+            const products = await getItems();
+            let htmlString = ``;
+            products.forEach((item) => {
+                htmlString += `\n
+                <div class="${ item == products[products.length-1] ? "bg-yellow-400" : "bg-yellow-200"} flex flex-col justify-center items-center rounded drop-shadow-md hover:drop-shadow-xl gap-2">
+                    <div class="font-bold">${item.fields.name}</div>
+                    <div>Stock: ${item.fields.amount}</div>
+                    <div class="flex flex-col">
+                        <h1 class="flex flex-col font-bold items-center">Description</h1>
+                        ${item.fields.description}
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="flex flex-col font-bold items-center">Taste</h1>
+                        <div>${item.fields.taste}</div>
+                    </div>
+                    <div class="flex flex-row gap-2 items-center justify-center m-2">
+                        {% csrf_token %}
+                        <button class="border p-1" type="submit" onclick="decreaseItem(177013)">-1</button>
+                        <button class="border p-1" type="submit" onclick="increaseItem(177013)">+1</button>
+                        <button class="border p-1" type="submit" onclick="removeItem(177013)">Delete</button>
+                    </div>
+                </div>`.replaceAll('177013', item.pk)
+            });
+            
+            document.getElementById("item_cards").innerHTML = htmlString
+        }
+
+        const createButton = document.getElementById("create-button");
+        const createModalBackground = document.getElementById("create-modal-background");
+        const createModal = document.getElementById("create-modal");
+        const createForm = document.getElementById("create-form");
+        const modalCloseButton = document.getElementById("modal-close-button");
+        const modalSubmitButton = document.getElementById("modal-submit-button");
+        createButton.onclick = function() {
+            createModalBackground.style.display = "flex";
+            createModal.classList.remove("scale-0");
+        }
+        modalCloseButton.onclick = function() {
+            createModalBackground.style.display = "none";   
+            createModal.classList.add("scale-0");
+            createForm.reset();
+        }
+        modalSubmitButton.onclick = function() {
+            createModalBackground.style.display = "none";   
+            createModal.classList.add("scale-0");
+
+            fetch("{% url 'main:create_item_ajax' %}", {
+                method: "POST",
+                body: new FormData(createForm)
+            }).then(refreshProducts)
+
+            createForm.reset();
+        }
+        refreshProducts()
+    </script>
+    ```
+    - Melakukan `collectstatic`.
+    - Melakukan deployment

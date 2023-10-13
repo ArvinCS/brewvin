@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from main.views import add_stock, create_item, delete_item, login_user, logout_user, register_user, remove_stock, show_json, show_json_by_id, show_main, show_xml, show_xml_by_id
+from main.views import add_stock, create_item, create_item_ajax, decrease_item_ajax, delete_item, increase_item_ajax, login_user, logout_user, register_user, remove_item_ajax, remove_stock, show_json, show_json_by_id, show_main, show_xml, show_xml_by_id
 
 app_name = "main"
 urlpatterns = [
@@ -31,5 +31,9 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('remove_stock/<int:id>/', remove_stock, name='remove_stock'),
     path('add_stock/<int:id>/', add_stock, name='add_stock'),
-    path('delete_item/<int:id>/', delete_item, name='delete_item')
+    path('delete_item/<int:id>/', delete_item, name='delete_item'),
+    path('create-ajax/', create_item_ajax, name='create_item_ajax'),
+    path('remove-ajax/<int:id>/', remove_item_ajax, name='remove_item_ajax'),
+    path('increase-ajax/<int:id>/', increase_item_ajax, name='increase_item_ajax'),
+    path('decrease-ajax/<int:id>/', decrease_item_ajax, name='decrease_item_ajax')
 ]

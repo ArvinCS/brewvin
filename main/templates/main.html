@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col items-center justify-center bg-yellow-300 h-screen">
+<div class="flex flex-col items-center justify-center bg-yellow-300 min-h-screen">
     <h1 class="text-xl font-semibold m-[30px]">{{ app_name }} </h1>
     
     <div class="flex flex-col w-[700px] p-[30px] bg-white rounded-lg divide-y divide-dashed">
@@ -17,57 +17,17 @@
                 </div>
             </div>
     
-            <a class="flex flex-row place-content-between" href="{% url 'main:create_item' %}">
+            <a class="flex flex-row place-content-between">
                 <h1 class="font-semibold">There are {{menus|length}} menus here</h1>
-                <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-[5px] px-4 border border-yellow-500 rounded">
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-[5px] px-4 border border-yellow-500 rounded" id="create-button">
                     Add New Item
                 </button>
             </a>    
             
-            <table class="mb-[20px]">
-                <tr>
-                    <th style="width:75px">Name</th>
-                    <th style="width:40px">Amount</th>
-                    <th style="width:200px">Description</th>
-                    <th style="width:120px">Taste</th>
-                    <th style="width:120px">
-                        Actions
-                    </th>
-                </tr>
-                {% for item in menus %}
-                    <tr class="{% if forloop.last %} bg-yellow-100 {% endif %}">
-                        <td>{{item.name}}</td>
-                        <td>{{item.amount}}</td>
-                        <td>{{item.description}}</td>
-                        <td>{{item.taste}}</td>
-                        <td>
-                            <div class="flex flex-col items-center justify-center">
-                                <form class="border w-fit" method="post" action="{% url 'main:remove_stock' item.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">-1</button>
-                                </form>
-                                <form class="border w-fit" method="post" action="{% url 'main:add_stock' item.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">+1</button>
-                                </form>
-                                <form class="border w-fit" method="post" action="{% url 'main:delete_item' item.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% if menus|length == 0 %}
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endif %}
-            </table>
+            <div id="item_cards" class="grid grid-cols-2 gap-2 mb-[20px]">
+            </div>
+            <!-- <table id="item_table" class="mb-[20px]">
+            </table> -->
         </div>
         <div class="flex flex-col">
             <a class="mt-[20px]" href="{% url 'main:logout' %}">
@@ -78,6 +38,125 @@
             <h5>Sesi terakhir login: {{ last_login }}</h5>
         </div>
     </div>
-    
+    <div class="fixed flex flex-col hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-screen w-screen items-center justify-center" id="create-modal-background">
+        <div class="transition-all duration-900 flex flex-col scale-0 bg-white min-h-[300px] w-fit px-[50px] py-3 items-center justify-center" id="create-modal">
+            <header class="font-bold">
+                Add New Item
+            </header>
+            
+            <section>
+                <form id="create-form">
+                    <div class="flex flex-col gap-2 divide-y divide-dashed mb-[10px]">
+                        <div class="flex flex-col">
+                            <label for="name">Name:</label>
+                            <input type="text" class="border border-yellow-500 w-fit" id="name" name="name"></input>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="amount">Amount:</label>
+                            <input type="number" class="border border-yellow-500 w-fit" id="amount" name="amount"></input>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="description">Description:</label>
+                            <textarea class="border border-yellow-500 w-fit" id="description" name="description"></textarea>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="taste">Taste:</label>
+                            <textarea class="border border-yellow-500 w-fit" id="taste" name="taste"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <div class="flex flex-row gap-1">
+                <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-[5px] px-4 border border-red-500 rounded" id="modal-close-button">
+                    Cancel
+                </button>
+                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-[5px] px-4 border border-green-500 rounded" id="modal-submit-button">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<script>
+    async function getItems() {
+        return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+    }
+
+    async function removeItem(id) {
+        fetch(`{% url 'main:remove_item_ajax' 177013 %}`.replaceAll('177013', id), {
+            method: "POST",
+        }).then(refreshProducts());
+    }
+
+    async function increaseItem(id) {
+        fetch(`{% url 'main:increase_item_ajax' 177013 %}`.replaceAll('177013', id), {
+            method: "POST",
+        }).then(refreshProducts());
+    }
+
+    async function decreaseItem(id) {
+        fetch(`{% url 'main:decrease_item_ajax' 177013 %}`.replaceAll('177013', id), {
+            method: "POST",
+        }).then(refreshProducts());
+    }
+
+    async function refreshProducts() {
+        document.getElementById("item_cards").innerHTML = "";
+        const products = await getItems();
+        let htmlString = ``;
+        products.forEach((item) => {
+            htmlString += `\n
+            <div class="${ item == products[products.length-1] ? "bg-yellow-400" : "bg-yellow-200"} flex flex-col justify-center items-center rounded drop-shadow-md hover:drop-shadow-xl gap-2">
+                <div class="font-bold">${item.fields.name}</div>
+                <div>Stock: ${item.fields.amount}</div>
+                <div class="flex flex-col">
+                    <h1 class="flex flex-col font-bold items-center">Description</h1>
+                    ${item.fields.description}
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="flex flex-col font-bold items-center">Taste</h1>
+                    <div>${item.fields.taste}</div>
+                </div>
+                <div class="flex flex-row gap-2 items-center justify-center m-2">
+                    {% csrf_token %}
+                    <button class="border p-1" type="submit" onclick="decreaseItem(177013)">-1</button>
+                    <button class="border p-1" type="submit" onclick="increaseItem(177013)">+1</button>
+                    <button class="border p-1" type="submit" onclick="removeItem(177013)">Delete</button>
+                </div>
+            </div>`.replaceAll('177013', item.pk)
+        });
+        
+        document.getElementById("item_cards").innerHTML = htmlString
+    }
+
+    const createButton = document.getElementById("create-button");
+    const createModalBackground = document.getElementById("create-modal-background");
+    const createModal = document.getElementById("create-modal");
+    const createForm = document.getElementById("create-form");
+    const modalCloseButton = document.getElementById("modal-close-button");
+    const modalSubmitButton = document.getElementById("modal-submit-button");
+    createButton.onclick = function() {
+        createModalBackground.style.display = "flex";
+        createModal.classList.remove("scale-0");
+    }
+    modalCloseButton.onclick = function() {
+        createModalBackground.style.display = "none";   
+        createModal.classList.add("scale-0");
+        createForm.reset();
+    }
+    modalSubmitButton.onclick = function() {
+        createModalBackground.style.display = "none";   
+        createModal.classList.add("scale-0");
+
+        fetch("{% url 'main:create_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(createForm)
+        }).then(refreshProducts)
+
+        createForm.reset();
+    }
+    refreshProducts()
+</script>
 {% endblock content %}
