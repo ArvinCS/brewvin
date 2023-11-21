@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -138,7 +138,7 @@ def create_item_ajax(request):
         new_product = Item(name=name, amount=amount, description=description, taste=taste, user=user)
         new_product.save()
 
-        return HttpResponse(serializers.serialize("json", {"status": True, "message": "Success!"}), content_type="application/json", status=200)
+        return JsonResponse({"status": True, "message": "Success!"}, status=200)
 
     return HttpResponseNotFound()
 
