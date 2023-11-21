@@ -138,7 +138,7 @@ def create_item_ajax(request):
         new_product = Item(name=name, amount=amount, description=description, taste=taste, user=user)
         new_product.save()
 
-        return HttpResponse(b"CREATED", status=201)
+        return HttpResponse(serializers.serialize("json", {"status": True, "message": "Success!"}), content_type="application/json", status=200)
 
     return HttpResponseNotFound()
 
