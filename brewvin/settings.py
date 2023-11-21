@@ -154,7 +154,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
 
-ALLOWED_HOSTS = ["arvin-tugas.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["arvin-tugas.pbp.cs.ui.ac.id", "127.0.0.1", "localhost"]
 CSRF_TRUSTED_ORIGINS = ["https://arvin-tugas.pbp.cs.ui.ac.id"]
 CSRF_ALLOWED_ORIGINS = ["https://arvin-tugas.pbp.cs.ui.ac.id"]
 CORS_ORIGINS_WHITELIST = ["https://arvin-tugas.pbp.cs.ui.ac.id"]
